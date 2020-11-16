@@ -2,6 +2,7 @@
 
 const TITLE = `Уютное местечко`;
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
+const TYPES_OUTPUT = [`Дворец`, `Квартира`, `Дом`, `Бунгало`];
 const CHECK_TIMES = [`12:00`, `13:00`, `14:00`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const DESCRIPTION = `Блаблабла`;
@@ -21,6 +22,7 @@ const LimitOfPins = {
 
 const map = document.querySelector(`.map`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
+const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
 const getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -43,6 +45,26 @@ const getRandomOptions = function (options) {
     }
   }
   return newArray;
+};
+
+const addTextData = function (block, data, string) {
+  if (data) {
+    let text = data;
+    if (string) {
+      text = string;
+    }
+    block.textContent = text;
+  } else {
+    block.remove();
+  }
+};
+
+const addTwoTextData = function (block, data1, data2, string) {
+  if (data1 && data2) {
+    block.textContent = string;
+  } else {
+    block.remove();
+  }
 };
 
 const getSimilarAds = function () {
@@ -99,7 +121,70 @@ const renderPins = function (pins, place) {
   place.appendChild(fragment);
 };
 
+const createCard = function (info) {
+  const card = cardTemplate.cloneNode(true);
+
+  const cardTitle = card.querySelector(`.popup__title`);
+  const cardAddres = card.querySelector(`.popup__text--address`);
+  const cardPrice = card.querySelector(`.popup__text--price`);
+  const cardType = card.querySelector(`.popup__type`);
+  const cardCapacity = card.querySelector(`.popup__text--capacity`);
+  const cardTime = card.querySelector(`.popup__text--time`);
+  const cardDescription = card.querySelector(`.popup__description`);
+  const cardFeaturesList = card.querySelector(`.popup__features`);
+  const cardImagesList = card.querySelector(`.popup__photos`);
+  const cardImage = card.querySelector(`.popup__photo`);
+  const cardAvatar = card.querySelector(`.popup__avatar`);
+
+  addTextData(cardTitle, info.offer.title);
+  addTextData(cardAddres, info.offer.address);
+  addTextData(cardPrice, info.offer.price, info.offer.price + `₽/ночь`);
+  addTextData(cardType, info.offer.type, TYPES_OUTPUT[TYPES.indexOf(info.offer.type)]);
+  addTextData(cardDescription, info.offer.description);
+  addTwoTextData(cardCapacity, info.offer.rooms, info.offer.guests, info.offer.rooms + ` комнаты для ` + info.offer.guests + ` гостей`);
+  addTwoTextData(cardTime, info.offer.checkin, info.offer.checkout, `Заезд после ` + info.offer.checkin + `, выезд до ` + info.offer.checkout);
+
+  if (info.offer.features.length !== 0) {
+    const cardFeatures = cardFeaturesList.querySelectorAll(`.popup__feature`);
+    for (let i = 0; i < cardFeatures.length; i++) {
+      let isfeatureExist = false;
+      for (let j = 0; j < info.offer.features.length; j++) {
+        if (cardFeatures[i].classList.contains(`popup__feature--` + info.offer.features[j])) {
+          isfeatureExist = true;
+        }
+      }
+      if (isfeatureExist === false) {
+        cardFeatures[i].remove();
+      }
+    }
+  } else {
+    cardFeaturesList.remove();
+  }
+
+  if (info.offer.photos.length !== 0) {
+    cardImage.src = info.offer.photos[0];
+    for (let i = 1; i < info.offer.photos.length; i++) {
+      const newCardImage = cardImage.cloneNode(true);
+      newCardImage.src = info.offer.photos[i];
+      cardImagesList.appendChild(newCardImage);
+    }
+  } else {
+    cardImagesList.remove();
+  }
+
+  if (info.author.avatar) {
+    cardAvatar.src = info.author.avatar;
+  } else {
+    cardAvatar.remove();
+  }
+
+  return card;
+};
 
 map.classList.remove(`map--faded`);
+const similarAds = getSimilarAds();
+renderPins(similarAds, mapOfPins);
 
-renderPins(getSimilarAds(), mapOfPins);
+const fragment = document.createDocumentFragment();
+fragment.appendChild(createCard(similarAds[0]));
+document.querySelector(`.map`).insertBefore(fragment, document.querySelector(`.map__filters-container`));
