@@ -2,7 +2,7 @@
 
 const TITLE = `Уютное местечко`;
 const TYPES = [`palace`, `flat`, `house`, `bungalow`];
-const TYPES_OUTPUT = [`Дворец`, `Квартира`, `Дом`, `Бунгало`];
+// const TYPES_OUTPUT = [`Дворец`, `Квартира`, `Дом`, `Бунгало`];
 const CHECK_TIMES = [`12:00`, `13:00`, `14:00`];
 const FEATURES = [`wifi`, `dishwasher`, `parking`, `washer`, `elevator`, `conditioner`];
 const DESCRIPTION = `Блаблабла`;
@@ -22,7 +22,14 @@ const LimitOfPins = {
 
 const map = document.querySelector(`.map`);
 const pinTemplate = document.querySelector(`#pin`).content.querySelector(`.map__pin`);
-const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+// const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
+const adForm = document.querySelector(`.ad-form`);
+const adAddress = document.querySelector(`#address`);
+const adRooms = document.querySelector(`#room_number`);
+const adCapacity = document.querySelector(`#capacity`);
+const mainPin = document.querySelector(`.map__pin--main`);
+const fieldsets = document.querySelectorAll(`fieldset`);
+const selects = document.querySelectorAll(`select`);
 
 const getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -46,7 +53,7 @@ const getRandomOptions = function (options) {
   }
   return newArray;
 };
-
+/*
 const addTextData = function (block, data, string) {
   if (data) {
     let text = data;
@@ -64,6 +71,12 @@ const addTwoTextData = function (block, data1, data2, string) {
     block.textContent = string;
   } else {
     block.remove();
+  }
+};
+*/
+const changeAccessForElements = function (elements, isneedAccess) {
+  for (let i = 0; i < elements.length; i++) {
+    elements[i].disabled = !isneedAccess;
   }
 };
 
@@ -120,7 +133,7 @@ const renderPins = function (pins, place) {
 
   place.appendChild(fragment);
 };
-
+/*
 const createCard = function (info) {
   const card = cardTemplate.cloneNode(true);
 
@@ -180,11 +193,65 @@ const createCard = function (info) {
 
   return card;
 };
+*/
+const disablePage = function () {
+  changeAccessForElements(fieldsets, false);
+  changeAccessForElements(selects, false);
 
-map.classList.remove(`map--faded`);
-const similarAds = getSimilarAds();
-renderPins(similarAds, mapOfPins);
+  adAddress.value = Math.floor(mainPin.offsetLeft + mainPin.offsetWidth / 2) + `, ` + Math.floor(mainPin.offsetTop + mainPin.offsetHeight);
+};
 
-const fragment = document.createDocumentFragment();
-fragment.appendChild(createCard(similarAds[0]));
-document.querySelector(`.map`).insertBefore(fragment, document.querySelector(`.map__filters-container`));
+const enablePage = function () {
+  map.classList.remove(`map--faded`);
+  adForm.classList.remove(`ad-form--disabled`);
+  changeAccessForElements(fieldsets, true);
+  changeAccessForElements(selects, true);
+
+  const similarAds = getSimilarAds();
+  renderPins(similarAds, mapOfPins);
+
+  adAddress.value = Math.floor(mainPin.offsetLeft + PinSize.WIDTH / 2) + `, ` + Math.floor(mainPin.offsetTop + PinSize.HEIGHT);
+};
+
+mainPin.addEventListener(`mousedown`, function (evt) {
+  if (evt.which === 1) {
+    enablePage();
+  }
+});
+
+mainPin.addEventListener(`keydown`, function (evt) {
+  if (evt.key === `Enter`) {
+    enablePage();
+  }
+});
+
+const isCapacityValid = function () {
+  const selRoomsOption = Number(adRooms.value);
+  const selCapacity = Number(adCapacity.value);
+  if (selCapacity !== 0 && selCapacity > selRoomsOption) {
+    adCapacity.setCustomValidity(`Количество гостей не должно превышать количество комнат.`);
+    adCapacity.reportValidity();
+  } else if (selCapacity !== 0 && selRoomsOption === 100) {
+    adCapacity.setCustomValidity(`Жилье со 100 комнатами не предназначено для гостей.`);
+    adCapacity.reportValidity();
+  } else if (selCapacity === 0 && selRoomsOption !== 100) {
+    adCapacity.setCustomValidity(`Пригласите гостей.`);
+    adCapacity.reportValidity();
+  } else {
+    adCapacity.setCustomValidity(``);
+  }
+};
+
+adCapacity.addEventListener(`change`, function () {
+  isCapacityValid();
+});
+
+adRooms.addEventListener(`change`, function () {
+  isCapacityValid();
+});
+
+disablePage();
+
+// const fragment = document.createDocumentFragment();
+// fragment.appendChild(createCard(similarAds[0]));
+// document.querySelector(`.map`).insertBefore(fragment, document.querySelector(`.map__filters-container`));
