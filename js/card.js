@@ -9,26 +9,6 @@
   };
   const cardTemplate = document.querySelector(`#card`).content.querySelector(`.map__card`);
 
-  const addTextData = function (block, data, string) {
-    if (data) {
-      let text = data;
-      if (string) {
-        text = string;
-      }
-      block.textContent = text;
-    } else {
-      block.remove();
-    }
-  };
-
-  const addTwoTextData = function (block, data1, data2, string) {
-    if (data1 && data2) {
-      block.textContent = string;
-    } else {
-      block.remove();
-    }
-  };
-
   const createCard = function (info) {
     const card = cardTemplate.cloneNode(true);
 
@@ -45,13 +25,13 @@
     const cardAvatar = card.querySelector(`.popup__avatar`);
     const cardCloseButton = card.querySelector(`.popup__close`);
 
-    addTextData(cardTitle, info.offer.title);
-    addTextData(cardAddres, info.offer.address);
-    addTextData(cardPrice, info.offer.price, info.offer.price + `₽/ночь`);
-    addTextData(cardType, info.offer.type, typesOutput[info.offer.type]);
-    addTextData(cardDescription, info.offer.description);
-    addTwoTextData(cardCapacity, info.offer.rooms, info.offer.guests, info.offer.rooms + ` комнаты для ` + info.offer.guests + ` гостей`);
-    addTwoTextData(cardTime, info.offer.checkin, info.offer.checkout, `Заезд после ` + info.offer.checkin + `, выезд до ` + info.offer.checkout);
+    window.util.addTextData(cardTitle, info.offer.title);
+    window.util.addTextData(cardAddres, info.offer.address);
+    window.util.addTextData(cardPrice, info.offer.price, info.offer.price + `₽/ночь`);
+    window.util.addTextData(cardType, info.offer.type, typesOutput[info.offer.type]);
+    window.util.addTextData(cardDescription, info.offer.description);
+    window.util.addTwoTextData(cardCapacity, info.offer.rooms, info.offer.guests, info.offer.rooms + ` комнаты для ` + info.offer.guests + ` гостей`);
+    window.util.addTwoTextData(cardTime, info.offer.checkin, info.offer.checkout, `Заезд после ` + info.offer.checkin + `, выезд до ` + info.offer.checkout);
 
     if (info.offer.features.length !== 0) {
       const cardFeatures = cardFeaturesList.querySelectorAll(`.popup__feature`);
