@@ -2,15 +2,27 @@
 
 (function () {
   const map = document.querySelector(`.map`);
+  const mapOfPins = map.querySelector(`.map__pins`);
+  const NUMBER_OF_ADS = 5;
 
-  const renderPins = function (pins, place) {
+  const renderPins = function (data) {
     const fragment = document.createDocumentFragment();
 
-    for (let i = 0; i < pins.length; i++) {
+    const pins = data.filter(function (ad) {
+      return ad.offer;
+    });
+
+    let count = NUMBER_OF_ADS;
+
+    if (pins.length < count) {
+      count = pins.length;
+    }
+
+    for (let i = 0; i < count; i++) {
       fragment.appendChild(window.pin.createPin(pins[i]));
     }
 
-    place.appendChild(fragment);
+    mapOfPins.appendChild(fragment);
   };
 
   const renderCard = function (info) {

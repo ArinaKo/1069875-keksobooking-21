@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  const mapOfPins = document.querySelector(`.map__pins`);
   const map = document.querySelector(`.map`);
   const mainPin = document.querySelector(`.map__pin--main`);
   const fieldsets = document.querySelectorAll(`fieldset`);
@@ -28,8 +27,7 @@
       window.util.changeAccessForElements(fieldsets, true);
       window.util.changeAccessForElements(selects, true);
 
-      const similarAds = window.data.getSimilarAds();
-      window.map.renderPins(similarAds, mapOfPins);
+      window.load.loadData(window.map.renderPins, window.load.errorMessage);
 
       window.util.changeAddress();
 

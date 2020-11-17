@@ -1,29 +1,6 @@
 'use strict';
 
 (function () {
-  const getRandomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  const getRandomOption = function (options) {
-    const i = getRandomNumber(0, options.length - 1);
-    return options[i];
-  };
-
-  const getRandomOptions = function (options) {
-    const newArray = [];
-    newArray.length = getRandomNumber(1, options.length);
-    let i = 0;
-    while (i < newArray.length) {
-      const newElement = getRandomOption(options);
-      if (!newArray.includes(newElement)) {
-        newArray[i] = newElement;
-        i++;
-      }
-    }
-    return newArray;
-  };
-
   const addTextData = function (block, data, string) {
     if (data) {
       let text = data;
@@ -63,9 +40,6 @@
   };
 
   window.util = {
-    getRandomNumber,
-    getRandomOption,
-    getRandomOptions,
     addTextData,
     addTwoTextData,
     changeAccessForElements,
