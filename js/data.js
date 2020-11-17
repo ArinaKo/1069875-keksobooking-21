@@ -16,29 +16,6 @@
     MAX_Y: 630
   };
 
-  const getRandomNumber = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  const getRandomOption = function (options) {
-    const i = getRandomNumber(0, options.length - 1);
-    return options[i];
-  };
-
-  const getRandomOptions = function (options) {
-    const newArray = [];
-    newArray.length = getRandomNumber(1, options.length);
-    let i = 0;
-    while (i < newArray.length) {
-      const newElement = getRandomOption(options);
-      if (!newArray.includes(newElement)) {
-        newArray[i] = newElement;
-        i++;
-      }
-    }
-    return newArray;
-  };
-
   const getSimilarAds = function () {
     const ads = [];
     for (let i = 0; i < NUMBER_OF_ADS; i++) {
@@ -48,20 +25,20 @@
         },
         offer: {
           title: TITLE,
-          address: getRandomNumber(1, 100) * 10 + `, ` + getRandomNumber(1, 100) * 10,
-          price: getRandomNumber(1, 100) * 100,
-          type: getRandomOption(TYPES),
-          rooms: getRandomNumber(1, 100),
-          guests: getRandomNumber(1, 100),
-          checkin: getRandomOption(CHECK_TIMES),
-          checkout: getRandomOption(CHECK_TIMES),
-          features: getRandomOptions(FEATURES),
+          address: window.util.getRandomNumber(1, 100) * 10 + `, ` + window.util.getRandomNumber(1, 100) * 10,
+          price: window.util.getRandomNumber(1, 100) * 100,
+          type: window.util.getRandomOption(TYPES),
+          rooms: window.util.getRandomNumber(1, 100),
+          guests: window.util.getRandomNumber(1, 100),
+          checkin: window.util.getRandomOption(CHECK_TIMES),
+          checkout: window.util.getRandomOption(CHECK_TIMES),
+          features: window.util.getRandomOptions(FEATURES),
           description: DESCRIPTION,
-          photos: getRandomOptions(PHOTOS)
+          photos: window.util.getRandomOptions(PHOTOS)
         },
         location: {
-          x: getRandomNumber(LimitOfPins.MIN_X, LimitOfPins.MAX_X),
-          y: getRandomNumber(LimitOfPins.MIN_Y, LimitOfPins.MAX_Y)
+          x: window.util.getRandomNumber(LimitOfPins.MIN_X, LimitOfPins.MAX_X),
+          y: window.util.getRandomNumber(LimitOfPins.MIN_Y, LimitOfPins.MAX_Y)
         }
       };
 
