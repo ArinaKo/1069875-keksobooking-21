@@ -9,27 +9,22 @@
 
   const createPin = function (info) {
     const pin = pinTemplate.cloneNode(true);
-    if (info.offer) {
-      pin.style.left = info.location.x - PinSize.WIDTH / 2 + `px`;
-      pin.style.top = info.location.y - PinSize.HEIGHT + `px`;
+    pin.style.left = info.location.x - PinSize.WIDTH / 2 + `px`;
+    pin.style.top = info.location.y - PinSize.HEIGHT + `px`;
 
-      const avatar = pin.querySelector(`img`);
-      avatar.src = info.author.avatar;
-      avatar.alt = info.offer.title;
+    const avatar = pin.querySelector(`img`);
+    avatar.src = info.author.avatar;
+    avatar.alt = info.offer.title;
 
-      pin.addEventListener(`click`, function () {
+    pin.addEventListener(`click`, function () {
+      window.map.renderCard(info);
+    });
+
+    pin.addEventListener(`keydown`, function (evt) {
+      if (evt.key === `Enter`) {
         window.map.renderCard(info);
-      });
-
-      pin.addEventListener(`keydown`, function (evt) {
-        if (evt.key === `Enter`) {
-          window.map.renderCard(info);
-        }
-      });
-
-    } else {
-      pin.setAttribute(`hidden`, true);
-    }
+      }
+    });
 
     return pin;
   };
