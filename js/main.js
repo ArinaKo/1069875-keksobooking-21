@@ -4,21 +4,27 @@
 
   const map = document.querySelector(`.map`);
   const mainPin = document.querySelector(`.map__pin--main`);
-  const fieldsets = document.querySelectorAll(`fieldset`);
-  const selects = document.querySelectorAll(`select`);
   const adForm = document.querySelector(`.ad-form`);
   const adAddress = adForm.querySelector(`#address`);
+  const formFieldsets = adForm.querySelectorAll(`fieldset`);
+
+  const filterOfAds = document.querySelector(`.map__filters`);
+  const filterSelects = filterOfAds.querySelectorAll(`select`);
+  const filterFieldsets = filterOfAds.querySelectorAll(`fieldset`);
 
   const disablePage = function () {
     map.classList.add(`map--faded`);
     adForm.classList.add(`ad-form--disabled`);
-    window.util.changeAccessForElements(fieldsets, false);
-    window.util.changeAccessForElements(selects, false);
+    window.util.changeAccessForElements(formFieldsets, false);
+    window.util.changeAccessForElements(filterFieldsets, false);
+    window.util.changeAccessForElements(filterSelects, false);
 
     window.map.deletePins();
     window.map.closePopup();
 
     window.util.resetMainPinPosition();
+    adForm.reset();
+    filterOfAds.reset();
 
     mainPin.removeEventListener(`mousedown`, window.moveScript.movePin);
 
@@ -43,10 +49,9 @@
   const enablePage = function () {
     map.classList.remove(`map--faded`);
     adForm.classList.remove(`ad-form--disabled`);
-    window.util.changeAccessForElements(fieldsets, true);
-    window.util.changeAccessForElements(selects, true);
+    window.util.changeAccessForElements(formFieldsets, true);
 
-    window.server(``, window.map.renderPins, window.messages.loadError);
+    window.server(``, window.data.loadingCompleted, window.messages.loadError);
 
     window.util.changeAddress();
 

@@ -105,6 +105,8 @@
     window.main.disablePage();
   };
 
-  formResetButton.addEventListener(`click`, formReset);
+  formResetButton.addEventListener(`click`, function () {
+    window.main.disablePage();
+  });
 
 })();
