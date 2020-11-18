@@ -6,6 +6,12 @@
   const mapOfPins = map.querySelector(`.map__pins`);
   const NUMBER_OF_ADS = 5;
 
+  const updatePins = function (data) {
+    deletePins();
+    closePopup();
+    renderPins(data.filter(window.data.filterData));
+  };
+
   const renderPins = function (data) {
     const fragment = document.createDocumentFragment();
 
@@ -54,7 +60,7 @@
   };
 
   window.map = {
-    renderPins,
+    updatePins,
     deletePins,
     renderCard,
     closePopup,
