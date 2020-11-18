@@ -1,6 +1,18 @@
 'use strict';
 
 (function () {
+  const PIN_SIZE = {
+    width: 50,
+    height: 70
+  };
+  const MainPinPosition = {
+    LEFT: 570,
+    TOP: 375
+  };
+  const addressInput = document.querySelector(`#address`);
+  const pin = document.querySelector(`.map__pin--main`);
+  const mainPin = document.querySelector(`.map__pin--main`);
+
   const addTextData = function (block, data, string) {
     if (data) {
       let text = data;
@@ -27,15 +39,12 @@
     }
   };
 
+  const resetMainPinPosition = function () {
+    mainPin.style.left = MainPinPosition.LEFT + `px`;
+    mainPin.style.top = MainPinPosition.TOP + `px`;
+  };
+
   const changeAddress = function () {
-    const addressInput = document.querySelector(`#address`);
-    const pin = document.querySelector(`.map__pin--main`);
-
-    const PIN_SIZE = {
-      width: 50,
-      height: 70
-    };
-
     addressInput.value = Math.floor(pin.offsetLeft + PIN_SIZE.width / 2) + `, ` + Math.floor(pin.offsetTop + PIN_SIZE.height);
   };
 
@@ -43,6 +52,7 @@
     addTextData,
     addTwoTextData,
     changeAccessForElements,
+    resetMainPinPosition,
     changeAddress
   };
 })();

@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   const map = document.querySelector(`.map`);
   const mapOfPins = map.querySelector(`.map__pins`);
   const NUMBER_OF_ADS = 5;
@@ -25,6 +26,13 @@
     mapOfPins.appendChild(fragment);
   };
 
+  const deletePins = function () {
+    const pins = document.querySelectorAll(`.map__pin:not(.map__pin--main)`);
+    for (let i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  };
+
   const renderCard = function (info) {
     closePopup();
     const card = window.card.createCard(info);
@@ -47,6 +55,7 @@
 
   window.map = {
     renderPins,
+    deletePins,
     renderCard,
     closePopup,
     onPopupEscPress
