@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   const priceLaw = {
     palace: 10000,
     flat: 1000,
@@ -15,6 +16,7 @@
   const adType = adForm.querySelector(`#type`);
   const adTimeIn = adForm.querySelector(`#timein`);
   const adTimeOut = adForm.querySelector(`#timeout`);
+  const formResetButton = adForm.querySelector(`.ad-form__reset`);
 
   const isCapacityValid = function () {
     const selRoomsOption = Number(adRooms.value);
@@ -86,5 +88,23 @@
   adTimeIn.addEventListener(`change`, function () {
     onTimesChange(adTimeIn, adTimeOut);
   });
+
+  adTimeOut.addEventListener(`change`, function () {
+    onTimesChange(adTimeOut, adTimeIn);
+  });
+
+  adForm.addEventListener(`submit`, function (evt) {
+    evt.preventDefault();
+    window.server(new FormData(adForm), window.messages.uploadSuccess, window.messages.uploadError);
+    formReset();
+
+  });
+
+  const formReset = function () {
+    adForm.reset();
+    window.main.disablePage();
+  };
+
+  formResetButton.addEventListener(`click`, formReset);
 
 })();

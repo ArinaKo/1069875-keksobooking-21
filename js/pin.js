@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   const PinSize = {
     WIDTH: 50,
     HEIGHT: 70

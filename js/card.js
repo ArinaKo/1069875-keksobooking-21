@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+
   const typesOutput = {
     palace: `Дворец`,
     flat: `Квартира`,
